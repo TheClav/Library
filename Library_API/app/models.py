@@ -1,21 +1,14 @@
-from pydantic import BaseModel
-from typing import Optional
-from datetime import date
+from sqlalchemy import Column, Integer, String, Date
+from .db import Base     # import the Base you created in db.py
 
-class BookBase(BaseModel):
-    title: str
-    author: str
-    genre: Optional[str] = None
-    status: str  # 'read', 'reading', 'want to read'
-    rating: Optional[int] = None
-    review: Optional[str] = None
-    completion_date: Optional[date] = None
+class Book(Base):
+    __tablename__ = "books"
 
-class BookCreate(BookBase):
-    pass
-
-class Book(BookBase):
-    id: int
-
-    class Config:
-        orm_mode = True
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    author = Column(String, nullable=False)
+    genre = Column(String)
+    status = Column(String, nullable=False)      # read / reading / want
+    rating = Column(Integer)
+    review = Column(String)
+    completion_date = Column(Date)
